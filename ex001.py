@@ -1,5 +1,6 @@
 from random import randint
 from time import sleep
+from typing import List
 
 class Carro:
     identificacao = None
@@ -21,12 +22,16 @@ class Carro:
         self.velocidade = 0
         self.quebrado = True
 
+class Ferrari(Carro):
+    def acelerar(self, quantidade):
+        super().acelerar(quantidade*1.5)
+
 class Corrida:
     carros = None
     velocidades = []
     rodadas = None
 
-    def __init__(self, carros, rodadas):
+    def __init__(self, carros:List[Carro], rodadas):
         self.carros = carros
         self.rodadas = rodadas
         for i in range(len(self.carros)):
@@ -57,12 +62,13 @@ class Corrida:
 
         posicao = 1
         for idx, velocidade in ordenado:
-            print(f'{posicao}: {self.carros[idx].identificacao} ({velocidade})')
+            print(f'{posicao}: {self.carros[idx].identificacao} ({velocidade:.2f})')
             posicao += 1
 
     def corrida(self):
         for i in range(self.rodadas):
             self.calcular_turno()
+
             sleep(1.5)
             print('')
             self.ranking()
@@ -78,10 +84,11 @@ class Corrida:
 
 carros = [
     Carro('Senna'),
-    Carro('Shummacher'),
+    Ferrari('Shummacher'),
     Carro('Hamilton'),
     Carro('Verstappen'),
-    Carro('Massa')
+    Carro('Massa'),
+    Carro('Bottas')
 ]
 
 
