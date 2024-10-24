@@ -48,8 +48,6 @@ class Corrida:
                 carro.acelerar(randint(2, 7))
 
             self.velocidades[idx] += carro.velocidade
-        sleep(1.5)
-        self.ranking()
 
     def ranking(self):
         # Lista de tuplas do tipo: [ (0, 25), (1, 10) ]
@@ -65,11 +63,14 @@ class Corrida:
     def corrida(self):
         for i in range(self.rodadas):
             self.calcular_turno()
+            sleep(1.5)
+            print('')
+            self.ranking()
 
         # for idx, carro in enumerate(self.carros):
         #     print(f'Velocidade total de {carro.identificacao} foi {self.velocidades[idx]}')
         
-        self.ranking()
+        # self.ranking()
     
     def executar(self):
         self.largada()
