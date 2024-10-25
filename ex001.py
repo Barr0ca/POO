@@ -2,10 +2,28 @@ from random import randint
 from time import sleep
 from typing import List
 
+class Pneu:
+    vida_util = 1
+    aderencia = 1
+
+    def __init__(self, aderencia):
+        self.aderencia = aderencia
+
+    def calcular(self, velocidade):
+        nova_velocidade = (self.aderencia * velocidade) * self.vida_util
+
+        self.vida_util -=  randint(1,10)/100
+
+        if (self.vida_util <= 0):
+            raise Exception('Pneu estourou.')
+
+        return nova_velocidade
+
 class Carro:
     identificacao = None
     velocidade = None
     quebrado = False
+    pneu = Pneu(1)
 
     def __init__(self, identificacao, velocidade = 1):
         self.identificacao = identificacao
@@ -16,7 +34,11 @@ class Carro:
 
     def acelerar(self, quantidade):
         if not self.quebrado:
-            self.velocidade += quantidade 
+            try:
+                self.velocidade += self.pneu.calcular(quantidade)
+            except Exception:
+                print(f'{self.identificacao} entrou no pit-stop.')
+                self.pneu = Pneu(1)
 
     def parar(self):
         self.velocidade = 0
