@@ -20,29 +20,47 @@ class Pneu:
         return nova_velocidade
 
 class Carro:
-    identificacao = None
-    velocidade = None
-    quebrado = False
-    pneu = Pneu(1)
+    # Atributos privados
+    __identificacao = None
+    __velocidade = None
+
+    # Atributos protegidos
+    _quebrado = False
+    _pneu = Pneu(1)
 
     def __init__(self, identificacao, velocidade = 1):
-        self.identificacao = identificacao
-        self.velocidade = velocidade
+        self.__identificacao = identificacao
+        self.__velocidade = velocidade
 
     def iniciar(self):
-        print(f'{self.identificacao} iniciou a corrida.')
+        print(f'{self.__identificacao} iniciou a corrida.')
 
     def acelerar(self, quantidade):
-        if not self.quebrado:
+        if not self._quebrado:
             try:
-                self.velocidade += self.pneu.calcular(quantidade)
+                self.__velocidade += self._pneu.calcular(quantidade)
             except Exception:
-                print(f'{self.identificacao} entrou no pit-stop.')
-                self.pneu = Pneu(1)
+                print(f'{self.__identificacao} entrou no pit-stop.')
+                self._pneu = Pneu(1)
 
     def parar(self):
-        self.velocidade = 0
-        self.quebrado = True
+        self.__velocidade = 0
+        self._quebrado = True
+
+    # Permite apenas a leitura do atributo velocidade
+    # Metodo Getter
+    def velocidade(self):
+        return self.__velocidade
+    
+    # Permite apenas a leitura do atributo identificação
+    # Metodo Getter
+    def identificacao(self):
+        return self.__identificacao
+    
+    # Permite apenas a leitura do atributo quebrado
+    # Metodo Getter
+    def quebrado(self):
+        return self._quebrado
 
 class Ferrari(Carro):
     def acelerar(self, quantidade):
@@ -66,15 +84,15 @@ class Corrida:
     def calcular_turno(self):
         for idx, carro in enumerate(self.carros):
             # Sorteio de acidente
-            if (randint(0,100) <= 1) and (not carro.quebrado):
-                print(f'Grave acidente na pista, {carro.identificacao} bateu na curva')
+            if (randint(0,100) <= 1) and (not carro.quebrado()):
+                print(f'Grave acidente na pista, {carro.identificacao()} bateu na curva')
                 carro.parar()
             
             # Sortei de aceleração
             if (randint(0, 100) <= 50):
                 carro.acelerar(randint(2, 7))
 
-            self.velocidades[idx] += carro.velocidade
+            self.velocidades[idx] += carro.velocidade()
 
     def ranking(self):
         # Lista de tuplas do tipo: [ (0, 25), (1, 10) ]
@@ -84,7 +102,7 @@ class Corrida:
 
         posicao = 1
         for idx, velocidade in ordenado:
-            print(f'{posicao}: {self.carros[idx].identificacao} ({velocidade:.2f})')
+            print(f'{posicao}: {self.carros[idx].identificacao()} ({velocidade:.2f})')
             posicao += 1
 
     def corrida(self):
