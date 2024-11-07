@@ -64,6 +64,7 @@ class Carro:
 
 class Ferrari(Carro):
     def acelerar(self, quantidade):
+        # O super permite modificar um método da calsse ancestral
         super().acelerar(quantidade*1.5)
 
 class Corrida:
