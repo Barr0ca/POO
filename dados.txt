@@ -1,0 +1,3 @@
+Este é um exemplo de persistência de dados.
+Esta é uma nova linha adicionada ao arquivo.
+Esta é uma nova linha adicionada ao arquivo.
